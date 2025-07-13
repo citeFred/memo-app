@@ -3,7 +3,6 @@ package com.metaverse.memo.controller;
 import com.metaverse.memo.dto.MemoRequestDto;
 import com.metaverse.memo.dto.MemoResponseDto;
 import com.metaverse.memo.service.MemoService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
