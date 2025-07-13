@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-@Component
+@Repository
 public class MemoRepository {
     private final JdbcTemplate jdbcTemplate;
 
