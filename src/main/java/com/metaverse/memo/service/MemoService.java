@@ -9,17 +9,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 public class MemoService {
-    private final JdbcTemplate jdbcTemplate;
+    private final MemoRepository memoRepository;
 
     public MemoService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.memoRepository = new MemoRepository(jdbcTemplate);
     }
 
     public MemoResponseDto createMemo(MemoRequestDto memoRequestDto) {
         // RequestDto -> Entity 변환
         Memo memo = new Memo(memoRequestDto);
 
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         Memo savedMemo = memoRepository.save(memo);
 
         // Entity -> ResponseDto 변환
@@ -28,14 +27,11 @@ public class MemoService {
     }
 
     public List<MemoResponseDto> getMemos() {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
         List<MemoResponseDto> responseList = memoRepository.findAll();
         return responseList;
     }
 
     public Long updateMemo(Long id, MemoRequestDto memoRequestDto) {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
-
         Memo memo = memoRepository.findById(id);
 
         if(memo != null) {
@@ -47,8 +43,6 @@ public class MemoService {
     }
 
     public Long deleteMemo(Long id) {
-        MemoRepository memoRepository = new MemoRepository(jdbcTemplate);
-
         Memo memo = memoRepository.findById(id);
 
         if(memo != null) {
