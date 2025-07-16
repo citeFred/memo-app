@@ -4,6 +4,7 @@ import com.metaverse.memo.domain.Memo;
 import com.metaverse.memo.dto.MemoRequestDto;
 import com.metaverse.memo.dto.MemoResponseDto;
 import com.metaverse.memo.repository.MemoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,28 +25,26 @@ public class MemoService {
     }
 
     public List<MemoResponseDto> getMemos() {
-        List<MemoResponseDto> responseList = memoRepository.findAll();
+        List<MemoResponseDto> responseList = memoRepository.findAll().stream().map(MemoResponseDto::new).toList();
         return responseList;
     }
 
+    @Transactional
     public Long updateMemo(Long id, MemoRequestDto memoRequestDto) {
-        Memo memo = memoRepository.findById(id);
-        if(memo != null) {
-            Long updatedId = memoRepository.update(id, memoRequestDto);
-            return updatedId;
-        } else {
-            throw new IllegalArgumentException("해당 ID의 메모는 존재하지 않습니다.");
-        }
+        Memo memo = findMemo(id);
+        memo.update(memoRequestDto);
+        return id;
     }
 
     public Long deleteMemo(Long id) {
-        Memo memo = memoRepository.findById(id);
+        Memo memo = findMemo(id);
+        memoRepository.delete(memo);
+        return id;
+    }
 
-        if(memo != null) {
-            Long deletedId = memoRepository.delete(id);
-            return deletedId;
-        } else {
-            throw new IllegalArgumentException("해당 ID의 메모는 존재하지 않습니다.");
-        }
+    private Memo findMemo(Long id) {
+        return memoRepository.findById(id).orElseThrow(() ->
+            new IllegalArgumentException("해당 메모는 존재하지 않습니다.")
+        );
     }
 }
