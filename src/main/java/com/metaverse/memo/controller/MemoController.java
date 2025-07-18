@@ -26,6 +26,11 @@ public class MemoController {
         return memoService.getMemos();
     }
 
+    @GetMapping("/memos/search") // 새로운 라우터 추가
+    public List<MemoResponseDto> searchMemos(@RequestParam String keyword) {
+        return memoService.searchMemosByKeyword(keyword);
+    }
+
     @PutMapping("/memos/{id}")
     public Long updateMemo(@PathVariable Long id, @RequestBody MemoRequestDto memoRequestDto) {
         return memoService.updateMemo(id, memoRequestDto);

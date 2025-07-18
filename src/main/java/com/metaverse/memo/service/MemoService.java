@@ -32,6 +32,11 @@ public class MemoService {
         return responseList;
     }
 
+    public List<MemoResponseDto> searchMemosByKeyword(String keyword) {
+        List<MemoResponseDto> responseList = memoRepository.findAllByContentsContainingIgnoreCase(keyword).stream().map(MemoResponseDto::new).toList();
+        return responseList;
+    }
+
     @Transactional
     public Long updateMemo(Long id, MemoRequestDto memoRequestDto) {
         Memo memo = findMemo(id);

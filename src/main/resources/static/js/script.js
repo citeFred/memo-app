@@ -167,3 +167,25 @@ function deleteOne(id) {
         }
     })
 }
+
+function search() {
+    let keyword = $('#search-input').val();
+
+    // 1. 기존 메모 내용을 지웁니다.
+    $('#cards-box').empty();
+    // 2. 메모 목록을 불러와서 HTML로 붙입니다.
+    $.ajax({
+        type: 'GET',
+        url: '/api/memos/search?keyword=' + keyword,
+        success: function (response) {
+            for (let i = 0; i < response.length; i++) {
+                let message = response[i];
+                let id = message['id'];
+                let username = message['username'];
+                let contents = message['contents'];
+                let modifiedAt = message['modifiedAt'];
+                addHTML(id, username, contents, modifiedAt);
+            }
+        }
+    })
+}
